@@ -81,3 +81,15 @@ tree shaking 是一个术语，通常用于描述移除 JavaScript 上下文中�
 技术上讲，NODE_ENV 是一个由 Node.js 暴露给执行脚本的系统环境变量。通常用于决定在开发环境与生产环境(dev-vs-prod)下，服务器工具、构建脚本和客户端 library 的行为。然而，与预期不同的是，无法在构建脚本 webpack.config.js 中，将 process.env.NODE_ENV 设置为 "production"，请查看 #2537。因此，例如 process.env.NODE_ENV === 'production' ? '[name].[hash].bundle.js' : '[name].bundle.js' 这样的条件语句，在 webpack 配置文件中，无法按照预期运行。
 
 > 注意，任何位于/src的本地代码都可以关联到process.env.NODE_ENV环境变量，意味着src下的文件都可以使用这个环境变量做些判断
+
+## 代码分离
+此特性能够把代码分离到不同的 bundle 中，然后可以按需加载或并行加载这些文件。代码分离可以用于获取更小的 bundle，以及控制资源加载优先级，如果使用合理，会极大影响加载时间。
+
+有三种常用的代码分离方法：
+* 入口起点：使用 entry 配置手动地分离代码。
+* 防止重复：使用 CommonsChunkPlugin 去重和分离 chunk。
+* 动态导入：通过模块的内联函数调用来分离代码。
+
+方式1，使用entry来手动分离代码有以下缺点：
+* 如果入口 chunks 之间包含重复的模块，那些重复模块都会被引入到各个 bundle 中。
+* 这种方法不够灵活，并且不能将核心应用程序逻辑进行动态拆分代码。

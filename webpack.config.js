@@ -6,6 +6,7 @@ const webpack = require('webpack')
 module.exports = {
     entry:{
         app:'./src/index.js',
+        another:'./src/another-module.js'
     },
     // 服务模式也可以在这里设置
     mode:'production',
