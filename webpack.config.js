@@ -21,9 +21,12 @@ module.exports = {
     module:{
         rules:[
             {
+                sideEffects: false
+            },
+            {
                 test:/\.css$/,
                 use:['style-loader','css-loader']
-            }
+            },
         ]
     },
     plugins:[
