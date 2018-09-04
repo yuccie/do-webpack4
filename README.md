@@ -93,3 +93,7 @@ tree shaking 是一个术语，通常用于描述移除 JavaScript 上下文中�
 方式1，使用entry来手动分离代码有以下缺点：
 * 如果入口 chunks 之间包含重复的模块，那些重复模块都会被引入到各个 bundle 中。
 * 这种方法不够灵活，并且不能将核心应用程序逻辑进行动态拆分代码。
+
+方式2，使用CommonsChunkPlugin可以将公共的依赖模块提取到已有的入口chunk中，或者提取到一个新生成的chunk中。
+CommonsChunkPlugin在webpac4中已经停止使用，可以使用optimization.splitChunks或者optimization.runtimeChunk进行替换
+参考链接：https://zhuanlan.zhihu.com/p/33164652

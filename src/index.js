@@ -1,6 +1,11 @@
 
 import { cube } from './math.js'
 import './style.css'
+import _ from 'lodash'
+
+console.log(
+	_.join(['生产', 'module', 'loaded!'], ' ')
+)
 
 if(process.env.NODE_ENV === 'production'){
 	console.log('现在是生产模式');
