@@ -1,0 +1,2 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[1],{4:function(e,o,t){"use strict";t.r(o),console.log("这个模块已经被加载，See the network tab in dev tools..."),o.default=(()=>{console.log('Button Clicked: Here\'s "some text"!')})}}]);
+//# sourceMappingURL=print.bundle.js.map
