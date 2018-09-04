@@ -55,7 +55,7 @@ webpack-dev-middleware 是一个容器(wrapper)，它可以把 webpack 处理后
 ### | tree shaking
 tree shaking 是一个术语，通常用于描述移除 JavaScript 上下文中的未引用代码(dead-code)，其实就是删除多余不用的代码。它依赖于 ES2015 模块系统中的静态结构特性，例如 import 和 export。这个术语和概念实际上是兴起于 ES2015 模块打包工具 rollup。
 
-## | 将文件标记为无副作用
+### | 将文件标记为无副作用
 在一个纯粹的ESM模块世界中，识别出哪些文件有副作用很简单，然而，我们的项目无法达到这种纯度，所以此时有必要向webpack的compiler提示哪些代码是'纯粹部分'，这样当检测到这些代码没有被引用时，就可以直接删除
 
 * 「副作用」的定义是，在导入时会执行特殊行为的代码，而不是仅仅暴露一个 export 或多个 export。举例说明，例如 polyfill，它影响全局作用域，并且通常不提供 export。
@@ -65,3 +65,10 @@ tree shaking 是一个术语，通常用于描述移除 JavaScript 上下文中�
 * 使用 ES2015 模块语法（即 import 和 export）。
 * 在项目 package.json 文件中，添加一个 "sideEffects" 入口。
 * 引入一个能够删除未引用代码(dead code)的压缩工具(minifier)（例如 UglifyJSPlugin）
+
+## 生产环境构建
+开发环境和生产环境的构建目标差异很大，在开发环境中，我们有具有强大的，具有实时重新加载(live reloading)或热模块替换(hot module replacement)能力的source map和localhost server。
+
+而在生产环境中，我们的目标则是转向于关注更小的bundle，更轻量的source map以及更优化的资源，以改善加载时间。由于要遵循逻辑分离，我们通常建议为每个环境编写彼此独立的webpack配置。
+
+虽然，以上我们将生产环境和开发环境做了略微区分，但是，请注意，我们还是会遵循不重复原则(Don't repeat yourself - DRY)，保留一个“通用”配置。为了将这些配置合并在一起，我们将使用一个名为 webpack-merge 的工具。通过“通用”配置，我们不必在环境特定(environment-specific)的配置中重复代码。
