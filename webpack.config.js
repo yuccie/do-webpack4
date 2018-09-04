@@ -1,12 +1,11 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
-
+const webpack = require('webpack')
 
 module.exports = {
     entry:{
         app:'./src/index.js',
-        print:'./src/print.js'
     },
     // 服务模式也可以在这里设置
     mode:'development',
@@ -16,7 +15,8 @@ module.exports = {
     // 增加webpack-dev-server开发服务器，可以实时重新加载（live reloading）
     // 告诉webpack-dev-server开发服务器在哪里找变化的文件,在 localhost:8080 下建立服务，将 dist 目录下的文件，作为可访问文件。
     devServer:{
-        contentBase:'./dist'
+        contentBase:'./dist',
+        hot:true
     },
     plugins:[
         // 虽然output里的名字根据entry的名字动态变化，但index.html里的引入名字还得手动改，因此引入html-webpack-plugin插件，这个插件自动生成index.html文件，并注入响应的各种外链资源
@@ -24,7 +24,10 @@ module.exports = {
             title:'output Management 输出管理'
         }),
         // 每次构建都删除dist目录，然后重建
-        new CleanWebpackPlugin(['dist'])
+        new CleanWebpackPlugin(['dist']),
+        // webpack内置插件，以便更容易查看要修补(patch)的依赖
+        new webpack.NamedModulesPlugin(),
+        new webpack.HotModuleReplacementPlugin(),
     ],
     output:{
         filename:'[name].boundle.js',
