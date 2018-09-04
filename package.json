@@ -5,9 +5,9 @@
   "description": "",
   "private": "",
   "scripts": {
-    "build": "npx webpack --mode development",
-    "watch": "webpack --watch --mode development",
-    "start": "webpack-dev-server --open --mode development",
+    "build": "npx webpack ",
+    "watch": "webpack --watch ",
+    "start": "webpack-dev-server --open ",
     "server":"node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
