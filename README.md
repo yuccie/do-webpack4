@@ -115,3 +115,10 @@ CommonsChunkPlugin在webpac4中已经停止使用，可以使用optimization.spl
 
 ### | 缓存——输出文件的文件名
 通过output.filename进行文件名替换，可以确保浏览器获取到修改后的文件。[hash]替换可以用于在文件命中包含一个构建相关(build-specific)的 hash，但是更好的方式是使用 [chunkhash] 替换，在文件名中包含一个 chunk 相关(chunk-specific)的哈希。
+
+### | .gitignore忽略文件
+如果项目已经建了，并且文件已经有了，再添加.gitignore之后并不会对已有的文件生效，此时需要用如下命令，如dist:
+```
+git rm --cached -r  dist/
+git commit -m '删除已缓存的追踪'
+```
