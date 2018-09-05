@@ -1,5 +1,9 @@
-// import _ from 'lodash'//不在静态导入，而是通过插件来引入
 import print from './print'
+// 这里没有将import变量绑定变量，这是因为只需在基础代码之外，再额外执行polyfills
+// 这样我们就可以假定代码中具有某些原生功能
+// 但是，不推荐这种在主bundle中引入polyfills，因为这不利于具有这些模块功能的现代浏览器用户，
+// 会使得他们下载体积很大，但却不需要的脚本文件
+import 'babel-polyfill'
 
 function component(){
 	var element = document.createElement('div')
