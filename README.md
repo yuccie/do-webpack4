@@ -154,3 +154,11 @@ optimization:{
 * 生产环境：在插件列表加入：new webpack.HashedModuleIdsPlugin()
 这样的话，再修改一个文件，如果不涉及到其他文件，生成的bundle也就不会变化，bundle变化的原因如下：This is because each module.id is incremented based on resolving order by default. Meaning when the order of resolving is changed, the IDs will be changed as well. （这是因为默认情况下，每个module.id都会根据解析顺序递增。 更改解析顺序时的含义，ID也会更改。）
 
+
+
+## | shimming
+webpack 编译器(compiler)能够识别遵循 ES2015 模块语法、CommonJS 或 AMD 规范编写的模块。然而，一些第三方的库(library)可能会引用一些全局依赖（例如 jQuery 中的 $）。这些库也可能创建一些需要被导出的全局变量。这些“不符合规范的模块”就是 shimming 发挥作用的地方。
+```
+我们不推荐使用全局的东西！在 webpack 背后的整个概念是让前端开发更加模块化。也就是说，需要编写具有良好的封闭性(well contained)、彼此隔离的模块，以及不要依赖于那些隐含的依赖模块（例如，全局变量）。请只在必要的时候才使用本文所述的这些特性。
+```
+shimming 另外一个使用场景就是，当你希望 polyfill 浏览器功能以支持更多用户时。在这种情况下，你可能只想要将这些 polyfills 提供给到需要修补(patch)的浏览器（也就是实现按需加载）。

@@ -1,4 +1,4 @@
-import _ from 'lodash'
+// import _ from 'lodash'//不在静态导入，而是通过插件来引入
 import print from './print'
 
 function component(){
