@@ -14,13 +14,11 @@ module.exports = webpackMerge(webpackCommonConfig,{
 		new webpack.DefinePlugin({
 			'process.env.NODE_ENV':JSON.stringify('production')
 		}),
-		// 将公共的依赖模块提取到指定名字的bundle中,在webpack4中废弃
-		// new webpack.optimize.CommonsChunkPlugin({
-		// 	name:'common'
-		// })
+		// 修复当以地方发生变化，其他的bundle也跟着变化
+		new webpack.HashedModuleIdsPlugin()
 	],
 	optimization:{
-		runtimeChunk:'single',//生成一个运行时的bundle
+		// runtimeChunk:'single',//生成一个运行时的bundle
 		// splitChunks是将第三方包处理出去，这里匹配的是node_modules目录下的
 		splitChunks:{
 			cacheGroups:{
