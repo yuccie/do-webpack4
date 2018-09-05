@@ -1,4 +1,8 @@
 import _ from 'lodash'
+import moment from 'moment'
+import test from './test'
+test()
+console.log('构建于',moment().format('MMMM Do YYYY, h:mm:ss a'))
 function component(){
 	var element = document.createElement('div')
 	var btn = document.createElement('button')

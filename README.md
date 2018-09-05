@@ -116,9 +116,35 @@ CommonsChunkPlugin在webpac4中已经停止使用，可以使用optimization.spl
 ### | 缓存——输出文件的文件名
 通过output.filename进行文件名替换，可以确保浏览器获取到修改后的文件。[hash]替换可以用于在文件命中包含一个构建相关(build-specific)的 hash，但是更好的方式是使用 [chunkhash] 替换，在文件名中包含一个 chunk 相关(chunk-specific)的哈希。
 
+bundle的名称是它内容（通过hash）的映射，如果我们对文件不做修改，然后再次运行构建，我们以为文件可能不变，但如果真的运行，可能会发现情况并非如此（意思是，如果我们不做修改，文件名可能会改也可能不改，这是因为webpack在入口chunk中，包含了某些样板（是webpack运行时的引导代码），特别是runtime和manifest）
+
 ### | .gitignore忽略文件
 如果项目已经建了，并且文件已经有了，再添加.gitignore之后并不会对已有的文件生效，此时需要用如下命令，如dist:
 ```
 git rm --cached -r  dist/
 git commit -m '删除已缓存的追踪'
+```
+
+### | 缓存——分离代码
+方式一,将运行时的代码独立打包
+```
+optimization:{
+	runtimeChunk:'single'
+}
+```
+
+方式二,可以在前面的基础上，将第三方包抽离出去，有三个选项，是抽离所有第三方包(all)，还是初次加载的(initial)，还是异步的(async)
+```
+optimization:{
+	runtimeChunk:'single',
+	splitChunks:{
+		cacheGroups:{
+			verdors:{
+				test:/[\\/]node_modules[\\/]/,
+				name:'vendors',
+				chunks:'all'
+			}
+		}
+	}
+}
 ```

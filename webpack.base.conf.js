@@ -24,8 +24,8 @@ module.exports = {
 		]
 	},
 	output:{
-		filename:'[name].[chunkhash].js',
-		chunkFilename:'[name].[chunkhash].js',//决定非入口chunk的名称
+		filename:'[name].[contenthash].js',
+		// chunkFilename:'[name].[chunkhash].js',//决定非入口chunk的名称
 		path:path.resolve(__dirname,'dist')
 	}
 }
