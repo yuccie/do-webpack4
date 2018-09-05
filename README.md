@@ -167,3 +167,22 @@ shimming 另外一个使用场景就是，当你希望 polyfill 浏览器功能�
 ### | 加载polyfills
 有很多方式载入polyfills，这里引入babel-polyfill
 polyfills 虽然是一种模块引入方式，但是并不推荐在主 bundle 中引入 polyfills，因为这不利于具备这些模块功能的现代浏览器用户，会使他们下载体积很大、但却不需要的脚本文件。
+
+利用whatwg-fetch，做到针对性加载polyfills。该如何决定，依赖于那些需要支持的技术以及浏览器。
+
+根据浏览器是否包含某些属性来判断是否为新浏览器。
+```
+<script>
+	var modernBrowser = (
+		'fetch' in window &&
+		'assign' in Object
+	)
+
+	if(!modernBrowser){
+		var scriptEle = document.createElement('script')
+		scriptEle.async = false
+		scriptEle.src = './polyfills.bundle.js'
+		document.head.appendChild(scriptEle)
+	}
+</script>
+```

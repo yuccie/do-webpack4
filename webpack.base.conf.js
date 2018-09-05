@@ -5,6 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
 	entry:{
+		polyfills:'./src/polyfills',
 		app:'./src/index.js',
 	},
 	plugins:[
@@ -32,7 +33,7 @@ module.exports = {
 		]
 	},
 	output:{
-		filename:'[name].[contenthash].js',
+		filename:'[name].bundle.js',
 		// chunkFilename:'[name].[chunkhash].js',//决定非入口chunk的名称
 		path:path.resolve(__dirname,'dist')
 	}
