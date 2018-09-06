@@ -98,6 +98,25 @@ tree shaking 是一个术语，通常用于描述移除 JavaScript 上下文中�
 CommonsChunkPlugin在webpac4中已经停止使用，可以使用optimization.splitChunks或者optimization.runtimeChunk进行替换
 参考链接：https://zhuanlan.zhihu.com/p/33164652
 
+早期的CommonsChunkPlugin使用方式：
+1，new webpack.optimize.CommonsChunkPlugin('common.js')； 将所有入口节点的公共代码提取出来，生成一个common.js
+2，new webpack.optimize.CommonsChunkPlugin('common.js',['entry1','entry2']);只提取entry1和entry2中的共用部分，生成common.js
+
+3，new webpack.optimize.CommonsChunkPlugin({
+    name: 'vendors',
+    minChunks: function (module, count) {
+       return (
+          module.resource &&
+          /\.js$/.test(module.resource) &&
+          module.resource.indexOf(
+            path.join(__dirname, '../node_modules')
+          ) === 0
+       )
+    }
+});
+提取所有node_modules中的模块至vendors中，也可以指定minChunks中的最小引用数；
+
+
 方式3，动态导入
 当涉及到动态代码拆分时，webpack提供了两个类似的技术。对于动态导入，第一种，也是最优选择的方式是，使用符合ECMAScript提案的import()语法，第二种，则是使用webpack特定的require.ensure
 
@@ -186,3 +205,19 @@ polyfills 虽然是一种模块引入方式，但是并不推荐在主 bundle �
 	}
 </script>
 ```
+
+### | 构建性能
+* [webpack构建性能](https://segmentfault.com/a/1190000007891318)
+1，通过 externals 配置来提取常用库，就是把我们的依赖资源声明为一个外部资源，然后通过script外链脚本引入。
+	这也是早期页面开发中资源引入的一种翻版，只是通过配置后可以告知webpack遇到此类变量名时就可以不用解析和编译值模块的内部文件中
+	而改用从外部变量中读取，提升编译速度，同时也能更好的利用cdn来实现缓存
+
+2,利用 DllPlugin 和 DllReferencePlugin 预编译资源模块
+	项目依赖中通常会引用大量的npm包，而这些包在正常的开发过程中并不会进行修改，但是在每一次构建过程中却需要反复的将其解析，如何来规避此类损耗呢？
+
+3,使用 Happypack 加速你的代码构建
+	以上均为针对webpack中的chunk计算和编译内容的优化与改进，对资源的实际改进上也较为明显，，，那如何针对资源的编译过程和速度优化做尝试呢？
+* [happypack增加线程加速构建](https://github.com/amireh/happypack)
+* [happypack原理](http://taobaofed.org/blog/2016/12/08/happypack-source-code-analysis/?utm_source=tuicool&utm_medium=referral)
+
+	众所周知，webpack中为了方便各种资源和类型的加载，设计了以loader加载器的形式读取资源，但是受限于node的编程模型影响，所有的loader虽然以async的形式来并发调用，但是还是运行在单个 node的进程以及在同一个事件循环中，这就直接导致了当我们需要同时读取多个loader文件资源时，比如babel-loader需要transform各种jsx，es6的资源文件。在这种同步计算同时需要大量耗费cpu运算的过程中，node的单进程模型就无优势了，那么happypack就针对解决此类问题而生。
